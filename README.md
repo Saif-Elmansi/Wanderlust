@@ -4,6 +4,11 @@
 
 ---
 
+## 🌐 Live Demo
+**Check out the live project here:** [https://saif-elmansi.github.io/Wanderlust/](https://saif-elmansi.github.io/Wanderlust/)
+
+---
+
 ## 🚀 Core Functionalities
 
 * **Global Destination Explorer**: Users can search and select from over 90 countries to instantly retrieve localized travel data.
