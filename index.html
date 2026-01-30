@@ -1,0 +1,954 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>me</title>
+
+    <!-- Font Awesome -->
+    <script>
+      window.FontAwesomeConfig = { autoReplaceSvg: "nest" };
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Stylesheets-->
+    <link rel="stylesheet" href="./src/css/base.css" />
+    <link rel="stylesheet" href="./src/css/layout.css" />
+    <link rel="stylesheet" href="./src/css/components.css" />
+    <link rel="stylesheet" href="./src/css/dashboard.css" />
+    <link rel="stylesheet" href="./src/css/views.css" />
+    <link rel="stylesheet" href="./src/css/weather.css" />
+    <link rel="stylesheet" href="./src/css/widgets.css" />
+    <link rel="stylesheet" href="./src/css/utilities.css" />
+  </head>
+
+  <body>
+    <div id="app" class="flex min-h-screen">
+      <!-- ======================= SIDEBAR ======================= -->
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-logo">
+          <div class="logo-icon"><i class="fa-solid fa-paper-plane"></i></div>
+          <span class="logo-text">Wanderlust</span>
+        </div>
+
+        <nav class="sidebar-nav">
+          <div class="nav-section">
+            <span class="nav-section-title">Main</span>
+            <a
+              href="#"
+              data-view="dashboard"
+              id="nav-id"
+              class="nav-item active"
+            >
+              <i class="fa-solid fa-house"></i><span>Dashboard</span>
+            </a>
+          </div>
+
+          <div class="nav-section">
+            <span class="nav-section-title">Explore</span>
+            <a href="#" data-view="holidays" id="nav-id" class="nav-item">
+              <i class="fa-solid fa-calendar-days"></i><span>Holidays</span>
+            </a>
+            <a href="#" data-view="events" id="nav-id" class="nav-item">
+              <i class="fa-solid fa-ticket"></i><span>Events</span>
+            </a>
+            <a href="#" data-view="weather" id="nav-id" class="nav-item">
+              <i class="fa-solid fa-cloud-sun"></i><span>Weather</span>
+            </a>
+            <a href="#" data-view="long-weekends" id="nav-id" class="nav-item">
+              <i class="fa-solid fa-umbrella-beach"></i
+              ><span>Long Weekends</span>
+            </a>
+          </div>
+
+          <div class="nav-section">
+            <span class="nav-section-title">Travel Tools</span>
+            <a href="#" data-view="currency" id="nav-id" class="nav-item">
+              <i class="fa-solid fa-money-bill-transfer"></i
+              ><span>Currency</span>
+            </a>
+            <a href="#" data-view="sun-times" id="nav-id" class="nav-item">
+              <i class="fa-solid fa-sun"></i><span>Sun Times</span>
+            </a>
+          </div>
+
+          <div class="nav-section">
+            <span class="nav-section-title">Personal</span>
+            <a href="#" data-view="my-plans" id="nav-id" class="nav-item">
+              <i class="fa-solid fa-heart"></i><span>My Plans</span>
+              <span id="plans-count" class="nav-badge hidden">0</span>
+            </a>
+          </div>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="sidebar-user">
+            <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+            <div class="user-info">
+              <span class="user-name">Traveler</span>
+              <span class="user-status">Planning mode</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div id="sidebar-overlay" class="sidebar-overlay hidden"></div>
+
+      <!-- ======================= MAIN CONTENT ======================= -->
+      <div class="main-wrapper">
+        <!-- ======================= TOP HEADER ======================= -->
+        <header id="top-header" class="top-header">
+          <button
+            id="mobile-menu-btn"
+            class="mobile-menu-btn"
+            aria-label="Open navigation menu"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+
+          <div class="header-title">
+            <h1 id="page-title">Dashboard</h1>
+            <p id="page-subtitle">
+              Welcome back! Ready to plan your next adventure?
+            </p>
+          </div>
+
+          <div class="header-actions">
+            <div class="header-datetime">
+              <i class="fa-regular fa-clock"></i>
+              <span id="current-datetime">Sat, Jan 25, 08:30 AM</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- ======================= MAIN CONTENT AREA ======================= -->
+        <main id="main-content" class="main-content">
+          <!-- ==================== DASHBOARD VIEW ==================== -->
+          <section id="dashboard-view" class="view active">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+              <div class="stat-card stat-primary">
+                <div class="stat-icon">
+                  <i class="fa-solid fa-earth-americas"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value" id="stat-countries">90+</span>
+                  <span class="stat-label">Countries Available</span>
+                </div>
+              </div>
+              <div class="stat-card stat-success">
+                <div class="stat-icon">
+                  <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-value" id="stat-holidays">17</span>
+                  <span class="stat-label">Holidays This Year</span>
+                </div>
+              </div>
+              <div class="stat-card stat-warning">
+                <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
+                <div class="stat-content">
+                  <span class="stat-value" id="stat-events">500+</span>
+                  <span class="stat-label">Events Worldwide</span>
+                </div>
+              </div>
+              <div class="stat-card stat-danger">
+                <div class="stat-icon"><i class="fa-solid fa-heart"></i></div>
+                <div class="stat-content">
+                  <span class="stat-value" id="stat-saved">0</span>
+                  <span class="stat-label">Saved Plans</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Global Country Search -->
+            <div class="section-card search-section">
+              <div class="section-header">
+                <h2>
+                  <i class="fa-solid fa-globe"></i> Select Your Destination
+                </h2>
+                <p class="section-subtitle">
+                  Choose a country to explore holidays, events, weather, and
+                  more
+                </p>
+              </div>
+              <div class="dashboard-search-form">
+                <div class="search-form-row">
+                  <div class="form-group flex-2">
+                    <label
+                      ><i class="fa-solid fa-earth-americas"></i> Country</label
+                    >
+                    <div
+                      class="custom-select-wrapper"
+                      id="country-custom-select"
+                    >
+                      <div class="custom-select-trigger">
+                        <div class="selected-content">
+                          <img
+                            src="https://www.pngarts.com/files/1/Globe-PNG-Pic.png"
+                            class="flag-img"
+                            id="current-flag"
+                            alt="Flag"
+                          />
+                          <span id="current-country-name">Select Country</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down arrow"></i>
+                      </div>
+                      <div class="custom-select-dropdown">
+                        <div class="custom-select-search">
+                          <i class="fa-solid fa-magnifying-glass"></i>
+                          <input
+                            type="text"
+                            placeholder="Search countries..."
+                            id="country-search-input"
+                          />
+                        </div>
+                        <div
+                          class="custom-select-options"
+                          id="country-options-container"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group flex-2">
+                    <label for="global-city"
+                      ><i class="fa-solid fa-city"></i> City</label
+                    >
+                    <div class="simple-select-wrapper" id="city-custom-select">
+                      <div class="simple-select-trigger">
+                        <i class="fa-solid fa-location-dot select-icon"></i>
+                        <span class="selected-text" id="current-city"
+                          >Select City</span
+                        >
+                        <i class="fa-solid fa-chevron-down arrow"></i>
+                      </div>
+                      <div
+                        class="simple-select-dropdown"
+                        id="city-options-container"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div class="form-group flex-1">
+                    <label for="current-year-select">
+                      <i class="fa-solid fa-calendar"></i> Year
+                    </label>
+                    <select
+                      id="current-year-select"
+                      class="form-select"
+                      title="Select Year"
+                    >
+                      <option value="2026" selected>2026</option>
+                      <option value="2027">2027</option>
+                      <option value="2028">2028</option>
+                    </select>
+                  </div>
+                  <div class="form-group search-btn-group">
+                    <label>&nbsp;</label>
+                    <button
+                      type="button"
+                      id="global-search-btn"
+                      class="btn btn-primary btn-explore"
+                    >
+                      <i class="fa-solid fa-magnifying-glass"></i>
+                      <span>Explore</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Selected Destination Display - STATIC EGYPT DATA -->
+                <div id="selected-destination" class="selected-destination">
+                  <div class="selected-flag">
+                    <img
+                      id="selected-country-flag"
+                      src="https://flagcdn.com/w80/eg.png"
+                      alt="Egypt"
+                    />
+                  </div>
+                  <div class="selected-info">
+                    <span
+                      class="selected-country-name"
+                      id="selected-country-name"
+                      >Egypt</span
+                    >
+                    <span class="selected-city-name" id="selected-city-name"
+                      >• Cairo</span
+                    >
+                  </div>
+                  <button
+                    class="clear-selection-btn"
+                    id="clear-selection-btn"
+                    aria-label="Open navigation menu"
+                  >
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Country Info Section - STATIC EGYPT DATA -->
+            <div class="section-card country-info-section">
+              <div class="section-header">
+                <h2><i class="fa-solid fa-flag"></i> Country Information</h2>
+              </div>
+
+              <div
+                id="country-info-placeholder"
+                class="country-info-placeholder"
+              >
+                <div class="placeholder-icon">
+                  <i class="fa-solid fa-earth-africa"></i>
+                </div>
+                <p>
+                  Select a country and click Explore to view detailed
+                  information
+                </p>
+              </div>
+
+              <div
+                id="dashboard-country-data"
+                class="dashboard-country-info hidden"
+              >
+                <div class="dashboard-country-header">
+                  <img src="" alt="Flag" class="dashboard-country-flag" />
+                  <div class="dashboard-country-title">
+                    <h3 id="dashboard-country-name"></h3>
+                    <p class="official-name"></p>
+                    <span class="region"></span>
+                  </div>
+                </div>
+
+                <div class="dashboard-local-time">
+                  <div class="local-time-display">
+                    <i class="fa-solid fa-clock"></i>
+                    <span class="local-time-value" id="country-local-time"
+                      >--:--:--</span
+                    >
+                    <span class="local-time-zone"></span>
+                  </div>
+                </div>
+
+                <div class="dashboard-country-grid">
+                  <div class="dashboard-country-detail">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <span class="label">Capital</span>
+                    <span id="capital-detail" class="value"></span>
+                  </div>
+                  <div class="dashboard-country-detail">
+                    <i class="fa-solid fa-users"></i>
+                    <span class="label">Population</span>
+                    <span id="population-detail" class="value"></span>
+                  </div>
+                  <div class="dashboard-country-detail">
+                    <i class="fa-solid fa-ruler-combined"></i>
+                    <span class="label">Area</span>
+                    <span id="area-detail" class="value"></span>
+                  </div>
+                  <div class="dashboard-country-detail">
+                    <i class="fa-solid fa-globe"></i>
+                    <span class="label">Continent</span>
+                    <span id="continent-detail" class="value"></span>
+                  </div>
+                  <div class="dashboard-country-detail">
+                    <i class="fa-solid fa-phone"></i>
+                    <span class="label">Calling Code</span>
+                    <span id="callingCode" class="value"></span>
+                  </div>
+                  <div class="dashboard-country-detail">
+                    <i class="fa-solid fa-car"></i>
+                    <span class="label">Driving Side</span>
+                    <span id="driving-detail" class="value"></span>
+                  </div>
+                  <div class="dashboard-country-detail">
+                    <i class="fa-solid fa-calendar-week"></i>
+                    <span class="label">Week Starts</span>
+                    <span id="week-detail" class="value"></span>
+                  </div>
+                </div>
+
+                <div class="dashboard-country-extras">
+                  <div class="dashboard-country-extra">
+                    <h4><i class="fa-solid fa-coins"></i> Currency</h4>
+                    <div class="extra-tags">
+                      <span id="currency-det" class="extra-tag"></span>
+                    </div>
+                  </div>
+                  <div class="dashboard-country-extra">
+                    <h4><i class="fa-solid fa-language"></i> Languages</h4>
+                    <div class="extra-tags">
+                      <span id="lang-detail" class="extra-tag"></span>
+                    </div>
+                  </div>
+                  <div class="dashboard-country-extra">
+                    <h4>
+                      <i class="fa-solid fa-map-location-dot"></i> Neighbors
+                    </h4>
+                    <div id="neighbors-detail" class="extra-tags"></div>
+                  </div>
+                </div>
+
+                <div class="dashboard-country-actions">
+                  <a href="#" target="_blank" class="btn-map-link">
+                    <i class="fa-solid fa-map"></i> View on Google Maps
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!-- Country Information Section-hidden -->
+            <div class="section-card country-info-section hidden">
+              <div class="section-header">
+                <h2><i class="fa-solid fa-flag"></i> Country Information</h2>
+              </div>
+
+              <div
+                id="country-info-placeholder"
+                class="country-info-placeholder"
+              >
+                <div class="placeholder-icon">
+                  <i class="fa-solid fa-earth-africa"></i>
+                </div>
+                <p>
+                  Select a country and click Explore to view detailed
+                  information
+                </p>
+              </div>
+
+              <div
+                id="dashboard-country-data"
+                class="dashboard-country-info hidden"
+              >
+                <div class="dashboard-country-header">
+                  <img src="" alt="" class="dashboard-country-flag" />
+                  <div class="dashboard-country-title">
+                    <h3 id="dashboard-country-name"></h3>
+                    <p class="official-name"></p>
+                    <span class="region"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ==================== HOLIDAYS VIEW - STATIC EGYPT 2026 DATA ==================== -->
+          <section id="holidays-view" class="view">
+            <div class="view-header-card gradient-green">
+              <div class="view-header-icon">
+                <i class="fa-solid fa-calendar-days"></i>
+              </div>
+              <div class="view-header-content">
+                <h2>Public Holidays Explorer</h2>
+                <p>
+                  Browse public holidays for Egypt and plan your trips around
+                  them
+                </p>
+              </div>
+              <div class="view-header-selection" id="holidays-selection">
+                <div class="current-selection-badge">
+                  <img
+                    src="https://flagcdn.com/w40/eg.png"
+                    alt="Egypt"
+                    class="selection-flag"
+                  />
+                  <span>Egypt</span>
+                  <span class="selection-year">2026</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="holidays-content" class="holidays-content">
+              <!-- Static Egypt 2026 Holidays -->
+            </div>
+
+            <div id="holidays-placeholder" class="empty-state">
+              <div class="empty-icon">
+                <i class="fa-solid fa-calendar-xmark"></i>
+              </div>
+              <h3>No Country Selected</h3>
+              <p>
+                Select a country from the dashboard to explore public holidays
+              </p>
+              <button id="btn-dashboard" class="btn-primary" >
+                <i class="fa-solid fa-gauge-high"></i> Go to Dashboard
+              </button>
+            </div>
+          </section>
+
+          <!-- ==================== EVENTS VIEW - STATIC CAIRO DATA ==================== -->
+          <section id="events-view" class="view">
+            <div class="view-header-card gradient-purple">
+              <div class="view-header-icon">
+                <i class="fa-solid fa-ticket"></i>
+              </div>
+              <div class="view-header-content">
+                <h2>Events Explorer</h2>
+                <p>Discover concerts, sports, theatre and more in Cairo</p>
+              </div>
+              <div class="view-header-selection">
+                <div class="current-selection-badge">
+                  <img
+                    src="https://flagcdn.com/w40/eg.png"
+                    alt="Egypt"
+                    class="selection-flag"
+                  />
+                  <span>Egypt</span>
+                  <span class="selection-city">• Cairo</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="events-content" class="events-grid-layout"></div>
+            <div id="events-placeholder" class="empty-state">
+              <div class="empty-icon">
+                <i class="fa-solid fa-ticket"></i>
+              </div>
+              <h3>No City Selected</h3>
+              <p>
+                Select a country and city from the dashboard to discover events
+              </p>
+              <button id="btn-dashboard" class="btn-primary" >
+                <i class="fa-solid fa-gauge-high"></i> Go to Dashboard
+              </button>
+            </div>
+          </section>
+
+          <!-- ==================== WEATHER VIEW - STATIC CAIRO DATA ==================== -->
+          <section id="weather-view" class="view">
+            <div class="view-header-card gradient-blue">
+              <div class="view-header-icon">
+                <i class="fa-solid fa-cloud-sun"></i>
+              </div>
+              <div class="view-header-content">
+                <h2>Weather Forecast</h2>
+                <p>Check 7-day weather forecasts for Cairo</p>
+              </div>
+              <div class="view-header-selection">
+                <div class="current-selection-badge">
+                  <img
+                    src="https://flagcdn.com/w40/eg.png"
+                    alt="Egypt"
+                    class="selection-flag"
+                  />
+                  <span>Egypt</span>
+                  <span class="selection-city">• Cairo</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="weather-content" class="weather-layout hidden">
+              <!-- Current Weather Hero -->
+              <div
+                id="weather-hero-card"
+                class="weather-hero-card weather-sunny"
+              >
+                <div class="weather-location">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <span>Cairo</span>
+                  <span class="weather-time">Saturday, January 25, 2026</span>
+                </div>
+                <div class="weather-hero-main">
+                  <div class="weather-hero-left">
+                    <div class="weather-hero-icon">
+                      <i class="fa-solid fa-sun"></i>
+                    </div>
+                    <div class="weather-hero-temp">
+                      <span class="temp-value">22</span>
+                      <span class="temp-unit">°C</span>
+                    </div>
+                  </div>
+                  <div class="weather-hero-right">
+                    <div class="weather-condition">Clear sky</div>
+                    <div class="weather-feels">Feels like 21°C</div>
+                    <div class="weather-high-low">
+                      <span class="high"
+                        ><i class="fa-solid fa-arrow-up"></i> 25°</span
+                      >
+                      <span class="low"
+                        ><i class="fa-solid fa-arrow-down"></i> 12°</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Weather Details Grid -->
+              <div id="weather-card-det" class="weather-details-grid">
+                <div class="weather-detail-card">
+                  <div class="detail-icon humidity">
+                    <i class="fa-solid fa-droplet"></i>
+                  </div>
+                  <div class="detail-info">
+                    <span class="detail-label">Humidity</span>
+                    <span class="detail-value">45%</span>
+                  </div>
+                </div>
+                <div class="weather-detail-card">
+                  <div class="detail-icon wind">
+                    <i class="fa-solid fa-wind"></i>
+                  </div>
+                  <div class="detail-info">
+                    <span class="detail-label">Wind</span>
+                    <span class="detail-value">15 km/h</span>
+                  </div>
+                </div>
+                <div class="weather-detail-card">
+                  <div class="detail-icon uv">
+                    <i class="fa-solid fa-sun"></i>
+                  </div>
+                  <div class="detail-info">
+                    <span class="detail-label">UV Index</span>
+                    <span class="detail-value">6</span>
+                  </div>
+                </div>
+                <div class="weather-detail-card">
+                  <div class="detail-icon precip">
+                    <i class="fa-solid fa-cloud-rain"></i>
+                  </div>
+                  <div class="detail-info">
+                    <span class="detail-label">Precipitation</span>
+                    <span class="detail-value">0%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hourly Forecast -->
+              <div id="weather-sec-horly" class="weather-section"></div>
+
+              <!-- 7-Day Forecast -->
+              <div id="weather-sec-seven" class="weather-section">
+                <h3 class="weather-section-title">
+                  <i class="fa-solid fa-calendar-week"></i> 7-Day Forecast
+                </h3>
+                <div id="weatherSeven" class="forecast-list"></div>
+              </div>
+            </div>
+            <div id="weather-placeholder" class="empty-state">
+              <div class="empty-icon">
+                <i class="fa-solid fa-question"></i>
+              </div>
+              <h3>No City Selected</h3>
+              <p>
+                Select a country and city from the dashboard to see the weather
+                forecast
+              </p>
+              <button id="btn-dashboard" class="btn-primary" >
+                <i class="fa-solid fa-gauge-high"></i> Go to Dashboard
+              </button>
+            </div>
+          </section>
+
+          <!-- ==================== LONG WEEKENDS VIEW - STATIC EGYPT DATA ==================== -->
+          <section id="long-weekends-view" class="view">
+            <div class="view-header-card gradient-orange">
+              <div class="view-header-icon">
+                <i class="fa-solid fa-umbrella-beach"></i>
+              </div>
+              <div class="view-header-content">
+                <h2>Long Weekend Finder</h2>
+                <p>
+                  Find holidays near weekends - perfect for planning mini-trips!
+                </p>
+              </div>
+              <div class="view-header-selection">
+                <div class="current-selection-badge">
+                  <img
+                    src="https://flagcdn.com/w40/eg.png"
+                    alt="Egypt"
+                    class="selection-flag"
+                  />
+                  <span>Egypt</span>
+                  <span class="selection-year">2026</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="lw-content" class="lw-grid"></div>
+            <div id="lw-placeholder" class="empty-state">
+              <div class="empty-icon">
+                <i class="fa-solid fa-ticket"></i>
+              </div>
+              <h3>No Country Selected</h3>
+              <p>
+                Select a country from the dashboard to discover long weekend opportunities
+              </p>
+              <button id="btn-dashboard" class="btn-primary" >
+                <i class="fa-solid fa-gauge-high"></i> Go to Dashboard
+              </button>
+            </div>
+          </section>
+
+          <!-- ==================== CURRENCY CONVERTER VIEW - STATIC DATA ==================== -->
+          <section id="currency-view" class="view">
+            <div class="view-header-card gradient-gold">
+              <div class="view-header-icon">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+              </div>
+              <div class="view-header-content">
+                <h2>Currency Converter</h2>
+                <p>Convert between currencies with live exchange rates</p>
+              </div>
+            </div>
+
+            <div class="currency-converter-card">
+              <div class="currency-form">
+                <div class="currency-input-group">
+                  <label for="currency-amount">Amount</label>
+                  <input
+                    type="number"
+                    id="currency-amount"
+                    class="currency-amount-input"
+                    value="100"
+                    min="0"
+                  />
+                </div>
+
+                <div class="currency-selects">
+                  <div class="currency-select-group">
+                    <label for="currency-from">From</label>
+                    <select id="currency-from" class="form-select">
+                      <option value="USD" selected>USD - US Dollar</option>
+                      <option value="EGP">EGP - Egyptian Pound</option>
+                      <option value="EUR">EUR - Euro</option>
+                      <option value="GBP">GBP - British Pound</option>
+                      <option value="SAR">SAR - Saudi Riyal</option>
+                      <option value="AED">AED - UAE Dirham</option>
+                      <option value="KWD">KWD - Kuwaiti Dinar</option>
+                      <option value="QAR">QAR - Qatari Riyal</option>
+                      <option value="JPY">JPY - Japanese Yen</option>
+                      <option value="TRY">TRY - Turkish Lira</option>
+                      <option value="CAD">CAD - Canadian Dollar</option>
+                      <option value="AUD">AUD - Australian Dollar</option>
+                      <option value="CHF">CHF - Swiss Franc</option>
+                      <option value="CNY">CNY - Chinese Yuan</option>
+                      <option value="RUB">RUB - Russian Ruble</option>
+                      <option value="INR">INR - Indian Rupee</option>
+                    </select>
+                  </div>
+                  <div class="currency-swap-wrapper">
+                    <button
+                      class="currency-swap-btn"
+                      aria-label="Open navigation menu"
+                      id="swap-currencies-btn"
+                    >
+                      <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                    </button>
+                  </div>
+                  <div class="currency-select-group">
+                    <label for="currency-to">To</label>
+                    <select id="currency-to" class="form-select">
+                      <option value="USD">USD - US Dollar</option>
+                      <option value="EGP">EGP - Egyptian Pound</option>
+                      <option value="EUR">EUR - Euro</option>
+                      <option value="GBP">GBP - British Pound</option>
+                      <option value="SAR">SAR - Saudi Riyal</option>
+                      <option value="AED">AED - UAE Dirham</option>
+                      <option value="KWD">KWD - Kuwaiti Dinar</option>
+                      <option value="QAR">QAR - Qatari Riyal</option>
+                      <option value="JPY">JPY - Japanese Yen</option>
+                      <option value="TRY">TRY - Turkish Lira</option>
+                      <option value="CAD">CAD - Canadian Dollar</option>
+                      <option value="AUD">AUD - Australian Dollar</option>
+                      <option value="CHF">CHF - Swiss Franc</option>
+                      <option value="CNY">CNY - Chinese Yuan</option>
+                      <option value="RUB">RUB - Russian Ruble</option>
+                      <option value="INR">INR - Indian Rupee</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button
+                  class="btn-primary btn-lg"
+                  aria-label="Open navigation menu"
+                  id="convert-btn"
+                >
+                  <i class="fa-solid fa-calculator"></i> Convert
+                </button>
+              </div>
+
+              <!-- Static Conversion Result -->
+              <div id="currency-result" class="currency-result hidden">
+                <div class="conversion-display">
+                  <div class="conversion-from">
+                    <span class="amount">100.00</span>
+                    <span id="fromCurrencyCode" class="currency-code">USD</span>
+                  </div>
+                  <div class="conversion-equals">
+                    <i class="fa-solid fa-equals"></i>
+                  </div>
+                  <div class="conversion-to">
+                    <span id="resultAmount" class="amount">3,090.00</span>
+                    <span id="toCurrencyCode" class="currency-code">EGP</span>
+                  </div>
+                </div>
+                <div class="exchange-rate-info">
+                  <p id="exchange-rate-display">1 USD = 30.90 EGP</p>
+                  <small id="dateCurrency"
+                    >Last updated: January 25, 2026</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div id="Quick-sec" class="section-card hidden">
+              <div class="section-header">
+                <h2><i class="fa-solid fa-star"></i> Quick Convert</h2>
+              </div>
+              <div
+                class="popular-currencies-grid hidden"
+                id="popular-currencies"
+              ></div>
+            </div>
+          </section>
+
+          <!-- ==================== SUN TIMES VIEW - STATIC CAIRO DATA ==================== -->
+          <section id="sun-times-view" class="view">
+            <div id="sun-card-1" class="view-header-card gradient-sunset">
+              <div class="view-header-icon">
+                <i class="fa-solid fa-sun"></i>
+              </div>
+              <div class="view-header-content">
+                <h2>Sunrise & Sunset Times</h2>
+                <p>
+                  Plan your activities around golden hour - perfect for
+                  photographers
+                </p>
+              </div>
+              <div class="view-header-selection">
+                <div class="current-selection-badge">
+                  <img
+                    src="https://flagcdn.com/w40/eg.png"
+                    alt="Egypt"
+                    class="selection-flag"
+                  />
+                  <span>Egypt</span>
+                  <span class="selection-city">• Cairo</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="sun-times-content" class="sun-times-layout hidden"></div>
+
+            <div id="sunset-placeholder" class="empty-state">
+              <div class="empty-icon">
+                <i class="fa-solid fa-sun"></i>
+              </div>
+              <h3>No City Selected</h3>
+              <p>
+                Select a country and city from the dashboard to see sunrise and
+                sunset times
+              </p>
+              <button id="btn-dashboard" class="btn-primary" >
+                <i class="fa-solid fa-gauge-high"></i> Go to Dashboard
+              </button>
+            </div>
+          </section>
+
+          <!-- ==================== MY PLANS VIEW - EMPTY STATE ==================== -->
+          <section id="my-plans-view" class="view">
+            <div class="view-header-card gradient-pink">
+              <div class="view-header-icon">
+                <i class="fa-solid fa-heart"></i>
+              </div>
+              <div class="view-header-content">
+                <h2>My Saved Plans</h2>
+                <p>
+                  Your saved holidays, events, and trip ideas all in one place
+                </p>
+              </div>
+              <div class="plans-actions">
+                <button
+                  class="btn-white-outline"
+                  aria-label="Open navigation menu"
+                  id="clear-all-plans-btn"
+                >
+                  <i class="fa-solid fa-trash"></i> Clear All
+                </button>
+              </div>
+            </div>
+
+            <div class="plans-filter-bar">
+              <button class="plan-filter active" data-filter="all">
+                <i class="fa-solid fa-layer-group"></i> All
+                <span class="filter-count" id="filter-all-count">0</span>
+              </button>
+              <button class="plan-filter" data-filter="holiday">
+                <i class="fa-solid fa-calendar-check"></i> Holidays
+                <span class="filter-count" id="filter-holiday-count">0</span>
+              </button>
+              <button class="plan-filter" data-filter="event">
+                <i class="fa-solid fa-ticket"></i> Events
+                <span class="filter-count" id="filter-event-count">0</span>
+              </button>
+              <button class="plan-filter" data-filter="longweekend">
+                <i class="fa-solid fa-umbrella-beach"></i> Long Weekends
+                <span class="filter-count" id="filter-lw-count">0</span>
+              </button>
+            </div>
+
+            <div id="plans-content" class="plans-grid">
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <i class="fa-solid fa-heart-crack"></i>
+                </div>
+                <h3>No Saved Plans Yet</h3>
+                <p>
+                  Start exploring and save holidays, events, or long weekends
+                  you like!
+                </p>
+                <button class="btn-primary" id="start-exploring-btn">
+                  <i class="fa-solid fa-compass"></i> Start Exploring
+                </button>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+      <div class="loading-content">
+        <div class="loading-spinner">
+          <i
+            class="fa-solid fa-paper-plane fa-spin"
+            style="font-size: 32px; color: var(--primary-500)"
+          ></i>
+        </div>
+        <p id="loading-text">Loading...</p>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Modal -->
+    <div id="modal-overlay" class="modal-overlay hidden">
+      <div class="modal-content">
+        <button
+          class="modal-close"
+          id="modal-close-btn"
+          aria-label="Open navigation menu"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+
+    <!-- Main JavaScript -->
+    <script type="module" src="./src/js/main.js"></script>
+  </body>
+</html>
