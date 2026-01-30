@@ -10,6 +10,19 @@ let countryCapital = "";
 let lat = "";
 let lng = "";
 
+
+function toggleLoading(show, text = "Fetching travel data...") {
+    const loader = document.getElementById("loading-overlay");
+    const loaderText = document.getElementById("loading-text");
+    if (loaderText) loaderText.textContent = text;
+    
+    if (show) {
+        loader.classList.remove("hidden");
+    } else {
+        loader.classList.add("hidden"); 
+    }
+}
+
 const updateDateTime = () => {
   const now = new Date();
   const newDate = now.toLocaleDateString("en-GB");
@@ -122,6 +135,7 @@ async function fetchCountryCode() {
 
 let btnExplore = document.getElementById("global-search-btn");
 btnExplore.addEventListener("click", async function () {
+  toggleLoading(true, `Exploring ${document.getElementById("current-country-name").textContent}...`);
   const country = document.getElementById("current-country-name").textContent;
   const city = document.getElementById("current-city").textContent.trim();
   const year = document.getElementById("current-year-select")?.value || "2026";
@@ -159,12 +173,18 @@ btnExplore.addEventListener("click", async function () {
     title: `Exploring ${country}, ${city}!`,
   });
 
-  fetchCountryCode();
-  getHoliday();
-  getEvents();
-  getWeatherData(lat, lng);
-  getSunData(lat, lng);
-  getLongWeekend(year, selectedCountryCode);
+
+  await Promise.all([
+  fetchCountryCode(),
+  getHoliday(),
+  getEvents(),
+  getWeatherData(lat, lng),
+  getSunData(lat, lng)  ,
+  getLongWeekend(year, selectedCountryCode) 
+    ]);
+  toggleLoading(false);
+
+
 });
 function parseUTCOffset(utcString) {
   const match = utcString.match(/UTC([+-])(\d{2}):(\d{2})/);
@@ -841,11 +861,13 @@ function updateSunUI(dataResults) {
 }
 // ====================== END SUNRISE/SUNSET FETCHING LOGIC =========================
 
+
 let btnConvert = document.getElementById("convert-btn");
 btnConvert.addEventListener("click", () => {
   getCurrency();
 });
 async function getCurrency() {
+  toggleLoading(true, "Calculating exchange rates...");
   let selectedCurrencyFrom = document.getElementById("currency-from").value;
   let selectedCurrencyTo = document.getElementById("currency-to").value;
 
@@ -853,6 +875,7 @@ async function getCurrency() {
     `https://open.er-api.com/v6/latest/${selectedCurrencyFrom}`,
   );
   let res = await data.json();
+  toggleLoading(false);
   console.log(res.rates);
 
   let rate = res.rates[selectedCurrencyTo];
@@ -1100,6 +1123,13 @@ function savePlan(type, title, date) {
   const isDuplicate = savedPlans.some(
     (plan) => plan.title === title && plan.date === date,
   );
+
+const btn = event.currentTarget;
+    const icon = btn.querySelector('i');
+    
+    icon.className = "fa-solid fa-heart"; 
+    
+    btn.classList.add('saved');
 
   if (isDuplicate) {
     Swal.fire({
